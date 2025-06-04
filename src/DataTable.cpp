@@ -1,13 +1,13 @@
 #include <iostream>
 #include "DataTables/DataTable.h"
 
-float DataTable::sumCol(int col) {
+double DataTable::sumCol(int col) {
     if (table.empty()) {
         std::cout << "Table is empty" << "\n";
         std::exit(1);
     }
 
-    float sum = 0;
+    double sum = 0;
     for (int i = 0; i < table.size(); i++) {
         if (!table[i].empty()) {
             sum += table[i][col];
@@ -16,15 +16,15 @@ float DataTable::sumCol(int col) {
     return sum;
 }
 
-float& DataTable::at(int row, int col) {
+double& DataTable::at(int row, int col) {
     return table[row][col];
 }
 
-std::vector<float>& DataTable::at(int row) {
+std::vector<double>& DataTable::at(int row) {
     return table[row];
 }
 
-void DataTable::setTableMatrix(std::vector<std::vector<float>> &table) {
+void DataTable::setTableMatrix(std::vector<std::vector<double>> &table) {
     this->table = table;
 }
 
