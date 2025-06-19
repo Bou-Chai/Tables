@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <stdexcept>
+#include <unordered_map>
 #include "ColumnBase.h"
 #include "Tables/Column.h"
 
@@ -26,7 +28,11 @@ namespace tables {
 
         template <typename T>
         Column<T>& col(int col) {
-            return *table.at(col);
+            Column<T>* columnPtr = dynamic_cast<Column<T>*>(table.at(col));
+            if (columnPtr == nullptr) {
+                throw std::invalid_argument("Table::col: Invalid template type used to retrieve column");
+            }
+            return *columnPtr;
         }   
 
         template <typename T>
@@ -81,6 +87,8 @@ namespace tables {
 
     private:
         std::vector<ColumnBase*> table;
+        std::vector<bool> numerical;
+        std::unordered_map<std::string, int> columnNames;
     };
 }
 

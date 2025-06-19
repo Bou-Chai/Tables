@@ -27,5 +27,6 @@ int main() {
     table.print();
 
     table.col<std::string>(2).row(1) = "bo";
+    table.print();
     return 0;
 }
