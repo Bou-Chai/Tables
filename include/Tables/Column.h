@@ -9,6 +9,10 @@ namespace tables {
     template <typename T>
     class Column : public ColumnBase {
     public:
+        virtual ~Column() {
+            std::cout << "Column destructor called" << "\n";
+        }
+        
         std::vector<T>& getVector() {
             return columnVector;
         }
@@ -30,7 +34,16 @@ namespace tables {
         }
 
         virtual T sum() {
+            if (this->columnVector.empty()) {
+                std::cout << "Table is empty" << "\n";
+                std::exit(1);
+            }
 
+            T sum = 0;
+            for (int i = 0; i < this->columnVector.size(); i++) {
+                sum += this->columnVector.at(i);
+            }
+            return sum;
         }
 
         void print() override {

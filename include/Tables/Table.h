@@ -26,6 +26,25 @@ namespace tables {
             double sumCol(int col);
             */
 
+        // Destructor
+        ~Table() {
+            for (ColumnBase* columnP : table) {
+                delete columnP;
+            }
+        }
+
+        // Function to access table element
+        template <typename T>
+        T& at(int col, int row) {
+            return this->col<T>(col).row(row);
+        }
+/*
+        // Function to access table column using square brackets
+        template <typename T>
+        Column<T>& operator[](int col) {
+            return this->col<T>(col);
+        }
+*/
         template <typename T>
         Column<T>& col(int col) {
             Column<T>* columnPtr = dynamic_cast<Column<T>*>(table.at(col));
@@ -34,21 +53,21 @@ namespace tables {
             }
             return *columnPtr;
         }   
-
-        template <typename T>
-        void removeRow(int row) {
-            for (Column<T>* columnP : table) {
-                columnP->remove(row);
-            }
-        }
         
-        void addColumn(ColumnBase* column) {
-            table.push_back(column);
+        template <typename T>
+        void addColumn(Column<T> column) {
+            table.push_back(new Column(column));
         }
 
         void removeCol(int col) {
             // TODO: make sure object is deleted
+            delete table[col];
             table.erase(table.begin() + col);
+        }
+
+        template <typename T>
+        T sum(int col) {
+            return this->col<T>(col).sum();
         }
 
         int getHeight() {

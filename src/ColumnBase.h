@@ -6,6 +6,7 @@
 namespace tables {
     class ColumnBase {
     public:
+        virtual ~ColumnBase() = default;
         virtual void print() = 0;
     private:
     };

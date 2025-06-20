@@ -1,3 +1,4 @@
+/*
 #ifndef NUMERICAL_COLUMN_H
 #define NUMERICAL_COLUMN_H
 
@@ -7,6 +8,10 @@ namespace tables {
     template <typename T>
     class NumericalColumn : public Column<T> {
     public:
+        ~NumericalColumn() {
+            std::cout << "NumericalColumn destructor called" << "\n";
+        }
+
         T sum() override {
             if (this->columnVector.empty()) {
                 std::cout << "Table is empty" << "\n";
@@ -23,3 +28,4 @@ namespace tables {
 }
 
 #endif
+*/
