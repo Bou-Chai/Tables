@@ -69,11 +69,15 @@ namespace tables {
         // Function to access column using index
         template <typename T>
         Column<T>& col(int col) {
-            Column<T>* columnPtr = dynamic_cast<Column<T>*>(table.at(col));
-            if (columnPtr == nullptr) {
-                throw std::invalid_argument("Table::col: Invalid template type used to retrieve column");
+            try {
+                Column<T>* columnPtr = dynamic_cast<Column<T>*>(table.at(col));
+                if (columnPtr == nullptr) {
+                    throw std::invalid_argument("Table::col: Invalid template type used to retrieve column");
+                }
+                return *columnPtr;
+            } catch (std::out_of_range) {
+                throw std::out_of_range("Table::col: Column index " + std::to_string(col) + " is out of range");
             }
-            return *columnPtr;
         }
 
         // Function to access column using title
@@ -153,63 +157,119 @@ namespace tables {
 
         void toInt(int col) {
             Column<int>* newColumn = new Column<int>;
-
-            // Replace column of strings with column of ints in columnMap
-            std::unordered_map<std::string, ColumnBase*>::iterator it;
-            for (it = columnMap.begin(); it != columnMap.end(); ++it) {
-                if (it->second == table[col]) {
-                    it->second = newColumn;
-                    break;
-                }
-            }
-
-            // Populate new column with integer values of the strings
+            // Populate new column with integer values of the strings of the old column
             std::vector<std::string> oldColumnV = this->col<std::string>(col).getVector();
             for (std::string s : oldColumnV) {
                 newColumn->add(std::stoi(s));
             }
-
-            // Delete the old column and assign new comlumn in column vector
-            delete table[col];
-            table[col] = newColumn;
+            // Replace old column with new column
+            this->replaceCol<int>(col, newColumn);
         }
 
         void toInt(std::string title) {
             Column<int>* newColumn = new Column<int>;
 
-            // Replace column of strings with column of ints in column vector
-            std::vector<ColumnBase*>::iterator it;
-            for (it = table.begin(); it != table.end(); ++it) {
-                if (*it == columnMap.at(title)) {
-                    *it = newColumn;
-                }
-            }
-
-            // Populate new column with integer values of the strings
+            // Populate new column with integer values of the strings of the old column
             std::vector<std::string> oldColumnV = this->col<std::string>(title).getVector();
             for (std::string s : oldColumnV) {
                 newColumn->add(std::stoi(s));
             }
-
-            // Delete the old column and assign new comlumn in columnMap
-            delete columnMap.at(title);
-            columnMap.at(title) = newColumn;
+            // Replace old column with new column
+            this->replaceCol<int>(title, newColumn);
         }
 
         void toLong(int col) {
+            Column<long>* newColumn = new Column<long>;
+            // Populate new column with long values of the strings of the old column
+            std::vector<std::string> oldColumnV = this->col<std::string>(col).getVector();
+            for (std::string s : oldColumnV) {
+                newColumn->add(std::stol(s));
+            }
+            // Replace old column with new column
+            this->replaceCol<long>(col, newColumn);
+        }
 
+        void toLong(std::string title) {
+            Column<long>* newColumn = new Column<long>;
+
+            // Populate new column with long values of the strings of the old column
+            std::vector<std::string> oldColumnV = this->col<std::string>(title).getVector();
+            for (std::string s : oldColumnV) {
+                newColumn->add(std::stol(s));
+            }
+            // Replace old column with new column
+            this->replaceCol<long>(title, newColumn);
         }
 
         void toFloat(int col) {
+            Column<float>* newColumn = new Column<float>;
+            // Populate new column with float values of the strings of the old column
+            std::vector<std::string> oldColumnV = this->col<std::string>(col).getVector();
+            for (std::string s : oldColumnV) {
+                newColumn->add(std::stof(s));
+            }
+            // Replace old column with new column
+            this->replaceCol<float>(col, newColumn);
+        }
 
+        void toFloat(std::string title) {
+            Column<float>* newColumn = new Column<float>;
+
+            // Populate new column with float values of the strings of the old column
+            std::vector<std::string> oldColumnV = this->col<std::string>(title).getVector();
+            for (std::string s : oldColumnV) {
+                newColumn->add(std::stof(s));
+            }
+            // Replace old column with new column
+            this->replaceCol<float>(title, newColumn);
         }
 
         void toDouble(int col) {
-
+            Column<double>* newColumn = new Column<double>;
+            // Populate new column with double values of the strings of the old column
+            std::vector<std::string> oldColumnV = this->col<std::string>(col).getVector();
+            for (std::string s : oldColumnV) {
+                newColumn->add(std::stod(s));
+            }
+            // Replace old column with new column
+            this->replaceCol<double>(col, newColumn);
         }
 
-        void toStr(int col) {
+        void toDouble(std::string title) {
+            Column<double>* newColumn = new Column<double>;
 
+            // Populate new column with double values of the strings of the old column
+            std::vector<std::string> oldColumnV = this->col<std::string>(title).getVector();
+            for (std::string s : oldColumnV) {
+                newColumn->add(std::stod(s));
+            }
+            // Replace old column with new column
+            this->replaceCol<double>(title, newColumn);
+        }
+
+        template <typename T>        
+        void toString(int col) {
+            Column<std::string>* newColumn = new Column<std::string>;
+            // Populate new column with double values of the strings of the old column
+            std::vector<T> oldColumnV = this->col<T>(col).getVector();
+            for (T s : oldColumnV) {
+                newColumn->add(std::to_string(s));
+            }
+            // Replace old column with new column
+            this->replaceCol<std::string>(col, newColumn);
+        }
+
+        template <typename T>
+        void toString(std::string title) {
+            Column<std::string>* newColumn = new Column<std::string>;
+
+            // Populate new column with double values of the strings of the old column
+            std::vector<T> oldColumnV = this->col<T>(title).getVector();
+            for (T s : oldColumnV) {
+                newColumn->add(std::to_string(s));
+            }
+            // Replace old column with new column
+            this->replaceCol<std::string>(title, newColumn);
         }
 
         void loadCSV(std::string fileName) {
@@ -269,6 +329,39 @@ namespace tables {
     private:
         std::vector<ColumnBase*> table;
         std::unordered_map<std::string, ColumnBase*> columnMap;
+
+        // Function to replace column using index
+        template <typename T>
+        void replaceCol(int col, Column<T>* newColumn) {
+            // Replace old column with new column in columnMap
+            std::unordered_map<std::string, ColumnBase*>::iterator it;
+            for (it = columnMap.begin(); it != columnMap.end(); ++it) {
+                if (it->second == table[col]) {
+                    it->second = newColumn;
+                    break;
+                }
+            }
+
+            // Delete the old column and assign new comlumn in column vector
+            delete table[col];
+            table[col] = newColumn;            
+        }
+
+        template <typename T>
+        // Function to replace column using title
+        void replaceCol(std::string title, Column<T>* newColumn) {
+            // Replace old column with new column in column vector
+            std::vector<ColumnBase*>::iterator it;
+            for (it = table.begin(); it != table.end(); ++it) {
+                if (*it == columnMap.at(title)) {
+                    *it = newColumn;
+                }
+            }
+
+            // Delete the old column and assign new comlumn in columnMap
+            delete columnMap.at(title);
+            columnMap.at(title) = newColumn;
+        }
     };
 }
 

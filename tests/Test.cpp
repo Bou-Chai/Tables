@@ -14,8 +14,11 @@ int main() {
     tables::Table table;
     
     table.loadCSV("../../../../Linear-Regression/data/house-price.csv");
-    table.toInt("bathrooms");
-    std::cout << table.sum<int>("bathrooms");
-    //table.print();
+    table.toDouble("bathrooms");
+    table.col<double>("bathrooms").print();
+    std::cout << table.sum<double>("bathrooms") << "\n";
+    table.toString<double>("bathrooms");
+    table.col<std::string>("bathrooms").print();
+    //std::cout << table.sum<std::string>("bathrooms") << "\n";
     return 0;
 }
