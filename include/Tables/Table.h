@@ -47,6 +47,18 @@ namespace tables {
         T& at(std::string title, int row) {
             return this->col<T>(title).row(row);
         }
+
+        // Function to add new data to column specified by index
+        template <typename T>
+        void add(int col, T data) {
+            this->col<T>(col).add(data);
+        }
+
+        // Function to add new data to column specified by title
+        template <typename T>
+        void add(std::string title, T data) {
+            this->col<T>(title).add(data);
+        }
 /*
         // Function to access table column using square brackets
         template <typename T>
@@ -54,7 +66,7 @@ namespace tables {
             return this->col<T>(col);
         }
 */      
-        // Function to access column
+        // Function to access column using index
         template <typename T>
         Column<T>& col(int col) {
             Column<T>* columnPtr = dynamic_cast<Column<T>*>(table.at(col));
@@ -94,6 +106,7 @@ namespace tables {
 
         // Function to remove column using index
         void removeCol(int col) {
+            
             std::unordered_map<std::string, ColumnBase*>::iterator it;
             for (it = columnMap.begin(); it != columnMap.end(); ++it) {
                 if (it->second == table[col]) {
@@ -139,7 +152,48 @@ namespace tables {
         }
 
         void toInt(int col) {
+            Column<int>* newColumn = new Column<int>;
 
+            // Replace column of strings with column of ints in columnMap
+            std::unordered_map<std::string, ColumnBase*>::iterator it;
+            for (it = columnMap.begin(); it != columnMap.end(); ++it) {
+                if (it->second == table[col]) {
+                    it->second = newColumn;
+                    break;
+                }
+            }
+
+            // Populate new column with integer values of the strings
+            std::vector<std::string> oldColumnV = this->col<std::string>(col).getVector();
+            for (std::string s : oldColumnV) {
+                newColumn->add(std::stoi(s));
+            }
+
+            // Delete the old column and assign new comlumn in column vector
+            delete table[col];
+            table[col] = newColumn;
+        }
+
+        void toInt(std::string title) {
+            Column<int>* newColumn = new Column<int>;
+
+            // Replace column of strings with column of ints in column vector
+            std::vector<ColumnBase*>::iterator it;
+            for (it = table.begin(); it != table.end(); ++it) {
+                if (*it == columnMap.at(title)) {
+                    *it = newColumn;
+                }
+            }
+
+            // Populate new column with integer values of the strings
+            std::vector<std::string> oldColumnV = this->col<std::string>(title).getVector();
+            for (std::string s : oldColumnV) {
+                newColumn->add(std::stoi(s));
+            }
+
+            // Delete the old column and assign new comlumn in columnMap
+            delete columnMap.at(title);
+            columnMap.at(title) = newColumn;
         }
 
         void toLong(int col) {
@@ -159,42 +213,56 @@ namespace tables {
         }
 
         void loadCSV(std::string fileName) {
-            /*
-            std::vector<std::vector<double>>* table = new std::vector<std::vector<double>>;
             std::ifstream file(fileName);
             std::string line;
 
+            if (!file.is_open()) {
+                throw std::runtime_error("loadCSV: unable to open file " + fileName);
+            }
 
+            getline(file, line);
+            std::string title = "";
+            for (char c : line) {
+                if (c == ',') {
+                    this->addColumn<std::string>(title, Column<std::string>());
+                    title = "";
+                } else {
+                    title += c;
+                }
+            }
+            this->addColumn<std::string>(title, Column<std::string>());
 
-            if (file.is_open()) {
-                for (int i = 0; getline(file, line); i++) {
-                    table->push_back({});
-                    std::string element = "";
-                    for (int j = 0; j < line.size(); j++) {
-                        if (std::isdigit(line[j]) || line[j] == '.') {
-                            element += line[j];
-                        } else if (line[j] == ',') {
-                            std::cout << element << "\n";
-                            table->at(i).push_back(std::stof(element));
-                            element = "";
-                        } else {
-                            break;
-                        }
-                    }
-                    if (element != "") {
-                        table->at(i).push_back(std::stof(element));
+            while (getline(file, line)) {
+                int columnIndex = 0;
+                std::string data = "";
+                for (char c : line) {
+                    if (c == ',') {
+                        this->add<std::string>(columnIndex, data);
+                        data = "";
+                        columnIndex++;
+                    } else {
+                        data += c;
                     }
                 }
-                file.close();
-            } else {
-                std::cout << "Failed to open file" << "\n";
+                this->add<std::string>(columnIndex, data);
             }
-                */
+            file.close();
         }
 
         void print() {
-            for (ColumnBase* column : table) {
-                column->print();
+            for (int i = 0; i  < table.size(); i++) {
+                std::unordered_map<std::string, ColumnBase*>::iterator it;
+                for (it = columnMap.begin(); it != columnMap.end(); ++it) {
+                    if (it->second == table[i]) {
+                        std::cout << it->first << ": ";
+                        break;
+                    }
+                }
+
+                if (it == columnMap.end()) {
+                    std::cout << i << ": ";
+                }
+                table[i]->print();
             }
         }
 

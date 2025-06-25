@@ -47,11 +47,13 @@ namespace tables {
         }
 
         void print() override {
-            for (T data : columnVector) {
-                std::cout << data << " ";
+            int i;
+            for (i = 0; i < columnVector.size() - 1; i++) {
+                std::cout << columnVector[i] << ", ";
             }
+            std::cout << columnVector[i];
             std::cout << "\n";
-        } 
+        }
 
     protected:
         std::vector<T> columnVector;
