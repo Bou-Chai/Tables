@@ -26,7 +26,7 @@ namespace tables {
         }
 
         void remove(int row) {
-            columnVector.erase(row);
+            columnVector.erase(columnVector.begin() + row);
         }
 
         int size() {
