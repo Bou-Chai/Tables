@@ -7,8 +7,9 @@ namespace tables {
     class ColumnBase {
     public:
         virtual ~ColumnBase() = default;
+        virtual void remove(int row) = 0; 
         virtual void print() = 0;
-    private:
+        virtual int length() = 0;
     };
 }
 

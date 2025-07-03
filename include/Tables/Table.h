@@ -139,6 +139,12 @@ namespace tables {
             columnMap.erase(title);
         }
 
+        void removeRow(int row) {
+            for(int i = 0; i < table.size(); i++) {
+                table[i]->remove(row);
+            }
+        }
+
         // Funciton to return sum of column using index
         template <typename T>
         T sum(int col) {
@@ -151,7 +157,11 @@ namespace tables {
             return this->col<T>(title).sum();
         }
 
-        int getHeight() {
+        int height() {
+            return table[0]->length();;
+        }
+
+        int width() {
             return table.size();
         }
 

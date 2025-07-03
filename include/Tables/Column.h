@@ -55,6 +55,10 @@ namespace tables {
             std::cout << "\n";
         }
 
+        int length() {
+            return columnVector.size();
+        }
+
     protected:
         std::vector<T> columnVector;
     };
