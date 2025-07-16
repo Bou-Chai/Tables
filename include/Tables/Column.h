@@ -35,8 +35,7 @@ namespace tables {
 
         virtual T sum() {
             if (this->columnVector.empty()) {
-                std::cout << "Table is empty" << "\n";
-                std::exit(1);
+                throw std::logic_error("Column::sum: Cannot sum empty table");
             }
 
             T sum = 0;
@@ -44,6 +43,14 @@ namespace tables {
                 sum += this->columnVector.at(i);
             }
             return sum;
+        }
+
+        // Function to normalize column data to a range between 0 and 1
+        void normalize() {
+            setFields();
+            for (T data : columnVector) {
+                data = (data - min) / (max - min);
+            }
         }
 
         void print() override {
@@ -59,8 +66,43 @@ namespace tables {
             return columnVector.size();
         }
 
+        T getMin() {
+            return min;
+        }
+
+        T getMax() {
+            return max;
+        }
+
+        T getMean() {
+            return mean;
+        }
+
     protected:
         std::vector<T> columnVector;
+        T min;
+        T max;
+        T mean = 0;
+        bool fieldsSet;
+
+    private:
+        void setFields() {
+            if (columnVector.empty()) {
+                throw std::logic_error("Cannot calculate field for empty column");
+            }
+            
+            min = columnVector[0];
+            max = columnVector[0];
+            if (!fieldsSet) {
+                for (T data : columnVector) {
+                    min = min(min, data);
+                    max = max(max, data);
+                    mean += data;
+                }
+                mean /= columnVector.size();
+                fieldsSet = true;
+            }
+        }
     };
 }
 
