@@ -145,16 +145,16 @@ namespace tables {
             }
         }
 
-        // Funciton to return sum of column using index
+        // Funciton to return sum of portion of column using index
         template <typename T>
-        T sum(int col) {
-            return this->col<T>(col).sum();
+        T sum(int col, float portion) {
+            return this->col<T>(col).sum(portion);
         }
 
-        // Function to return sum of column using title
+        // Function to return sum of portion of column using title
         template <typename T>
-        T sum(std::string title) {
-            return this->col<T>(title).sum();
+        T sum(std::string title, float portion) {
+            return this->col<T>(title).sum(portion);
         }
 
         int height() {

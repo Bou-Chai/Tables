@@ -33,13 +33,13 @@ namespace tables {
             return columnVector.size();
         }
 
-        virtual T sum() {
+        virtual T sum(float portion) {
             if (this->columnVector.empty()) {
                 throw std::logic_error("Column::sum: Cannot sum empty table");
             }
 
             T sum = 0;
-            for (int i = 0; i < this->columnVector.size(); i++) {
+            for (int i = 0; i < (int)(this->columnVector.size() * portion); i++) {
                 sum += this->columnVector.at(i);
             }
             return sum;
