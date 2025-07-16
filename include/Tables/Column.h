@@ -82,7 +82,7 @@ namespace tables {
         std::vector<T> columnVector;
         T min;
         T max;
-        T mean = 0;
+        T mean;
         bool fieldsSet;
 
     private:
@@ -91,6 +91,7 @@ namespace tables {
                 throw std::logic_error("Cannot calculate field for empty column");
             }
             
+            mean = 0;
             min = columnVector[0];
             max = columnVector[0];
             if (!fieldsSet) {

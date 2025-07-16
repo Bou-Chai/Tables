@@ -16,7 +16,7 @@ int main() {
     table.loadCSV("../../../../Linear-Regression/data/house-price.csv");
     table.toDouble("bathrooms");
     table.col<double>("bathrooms").print();
-    std::cout << table.sum<double>("bathrooms") << "\n";
+    std::cout << table.sum<double>("bathrooms", 0.75) << "\n";
     table.toString<double>("bathrooms");
     table.col<std::string>("bathrooms").print();
     //std::cout << table.sum<std::string>("bathrooms") << "\n";
