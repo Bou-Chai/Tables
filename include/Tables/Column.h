@@ -40,11 +40,11 @@ namespace tables {
             columnVector.erase(columnVector.begin() + row);
         }
 
-        int size() {
+        int size() const {
             return columnVector.size();
         }
 
-        bool empty() {
+        bool empty() const {
             return columnVector.empty();
         }
 
@@ -68,17 +68,13 @@ namespace tables {
             }
         }
 
-        void print() override {
+        void print() const override {
             int i;
             for (i = 0; i < columnVector.size() - 1; i++) {
                 std::cout << columnVector[i] << ", ";
             }
             std::cout << columnVector[i];
             std::cout << "\n";
-        }
-
-        int length() {
-            return columnVector.size();
         }
 
         T getMin() {

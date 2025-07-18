@@ -158,7 +158,7 @@ namespace tables {
         }
 
         int height() {
-            return table[0]->length();;
+            return table[0]->size();;
         }
 
         int width() {

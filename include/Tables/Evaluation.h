@@ -3,14 +3,18 @@
 
 namespace tables {
     namespace eval {
+        void checkColumns(const ColumnBase& col1, const ColumnBase& col2, std::string funcName) {
+            if (col1.empty() || col2.empty()) {
+                throw std::logic_error("eval::" + funcName + ": Input columns must not be empty");
+            }
+            if (col1.size() != col2.size()) {
+                throw std::logic_error("eval::" + funcName + ": Input column sizes must be the same");
+            }
+        }
+
         template <typename T>
-        double mae(Column<T> yActual, Column<T> yPredicted) {
-            if (yActual.empty() || yPredicted.empty()) {
-                throw std::logic_error("eval::mae: input columns must not be empty");
-            }
-            if (yActual.size() != yPredicted.size()) {
-                throw std::logic_error("eval::mae: input column sizes must be the same");
-            }
+        double mae(Column<T>& yActual, Column<T>& yPredicted) {
+            checkColumns(yActual, yPredicted, "mae");
 
             T errorSum = 0;
             for (int i = 0; i < yActual.size(); i++) {
@@ -20,13 +24,8 @@ namespace tables {
         }
 
         template <typename T>
-        double rmse(Column<T> yActual, Column<T> yPredicted) {
-            if (yActual.empty() || yPredicted.empty()) {
-                throw std::logic_error("eval::rmse: input columns must not be empty");
-            }
-            if (yActual.size() != yPredicted.size()) {
-                throw std::logic_error("eval::rmse: input column sizes must be the same");
-            }
+        double rmse(Column<T>& yActual, Column<T>& yPredicted) {
+            checkColumns(yActual, yPredicted, "rmse");
 
             T errorSum = 0;
             for (int i = 0; i < yActual.size(); i++) {
