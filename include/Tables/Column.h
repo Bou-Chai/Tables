@@ -78,6 +78,46 @@ namespace tables {
             return mean;
         }
 
+        T getMin(int low, int high) {
+            T min;
+            if (low >= 0 && high < columnVector.size() && low < high) {
+                min = columnVector[low];
+                for (int i = low; i <= high; i++) {
+                    min = std::min(min, columnVector[i]);
+                }
+            } else {
+                throw std::out_of_range("Column::getMin: Invalid range");
+            }
+            return min;
+        }
+
+        T getMax(int low, int high) {
+            T max;
+            if (low >= 0 && high < columnVector.size() && low < high) {
+                max = columnVector[low];
+                for (int i = low; i <= high; i++) {
+                    max = std::max(max, columnVector[i]);
+                }
+            } else {
+                throw std::out_of_range("Column::getMax: Invalid range");
+            }
+            return max;
+        }
+
+        T getMean(int low, int high) {
+            T mean;
+            if (low >= 0 && high < columnVector.size() && low < high) {
+                mean = 0;
+                for (int i = low; i <= high; i++) {
+                    mean += columnVector[i];
+                }
+                mean /= (high - low + 1);
+            } else {
+                throw std::out_of_range("Column::getMean: Invalid range");
+            }
+            return mean;
+        }
+
     protected:
         std::vector<T> columnVector;
         T min;
