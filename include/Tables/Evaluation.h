@@ -14,7 +14,7 @@ namespace tables {
 
             T errorSum = 0;
             for (int i = 0; i < yActual.size(); i++) {
-                errorSum += yActual.row(i) - yPredicted.row(i);
+                errorSum += std::abs(yActual.row(i) - yPredicted.row(i));
             }
             return errorSum / yActual.size();
         }

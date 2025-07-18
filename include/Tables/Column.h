@@ -10,27 +10,27 @@ namespace tables {
     class Column : public ColumnBase {
     public:
         virtual ~Column() {
-            std::cout << "Column destructor called" << "\n";
+            //std::cout << "Column destructor called" << "\n";
         }
         
         std::vector<T>& getVector() {
             return columnVector;
         }
 
-        // Return a new column with column elements from index low to end - 1
-        Column<T>& getRange(int start, int end) {
-            if (start >= 0 && end < this->columnVector.size() && start < end) {
-                Column<T>* newCol = new Column<T>();
-                for (int i = start; i < end; i++) {
-                    newCol.add(this->columnVector.at(i));
-                }
-            } else {
-                throw std::range_error("Column::getRange: Invalid range")
-            }
-            return *newCol;
+        T& row(int row) {
+            return columnVector.at(row);
         }
 
+        // Return a new column with column elements from index start to end - 1
+        Column<T>& getRange(int start, int end) {
+            checkRange(start, end, "getRange");
 
+            Column<T>* newCol = new Column<T>();
+            for (int i = start; i < end; i++) {
+                newCol->add(this->columnVector.at(i));
+            }   
+            return *newCol;
+        }
 
         void add(T data) {
             columnVector.push_back(data);
@@ -93,44 +93,37 @@ namespace tables {
             return mean;
         }
 
-        T getMin(int low, int high) {
+        T getMin(int start, int end) {
+            checkRange(start, end, "getMin");
+
             T min;
-            if (low >= 0 && high < columnVector.size() && low < high) {
-                min = columnVector[low];
-                for (int i = low; i <= high; i++) {
-                    min = std::min(min, columnVector[i]);
-                }
-            } else {
-                throw std::out_of_range("Column::getMin: Invalid range");
+            min = columnVector[start];
+            for (int i = start; i < end; i++) {
+                min = std::min(min, columnVector[i]);
             }
             return min;
         }
 
-        T getMax(int low, int high) {
+        T getMax(int start, int end) {
+            checkRange(start, end, "getMax");
+
             T max;
-            if (low >= 0 && high < columnVector.size() && low < high) {
-                max = columnVector[low];
-                for (int i = low; i <= high; i++) {
-                    max = std::max(max, columnVector[i]);
-                }
-            } else {
-                throw std::out_of_range("Column::getMax: Invalid range");
+            max = columnVector[start];
+            for (int i = start; i < end; i++) {
+                max = std::max(max, columnVector[i]);
             }
             return max;
         }
 
-        T getMean(int low, int high) {
-            T mean;
-            if (low >= 0 && high < columnVector.size() && low < high) {
-                mean = 0;
-                for (int i = low; i <= high; i++) {
-                    mean += columnVector[i];
-                }
-                mean /= (high - low + 1);
-            } else {
-                throw std::out_of_range("Column::getMean: Invalid range");
+        T getMean(int start, int end) {
+            checkRange(start, end, "getMean");
+
+            T sum;
+            sum = 0;
+            for (int i = start; i < end; i++) {
+                sum += columnVector[i];
             }
-            return mean;
+            return sum / (end - start);
         }
 
     protected:
@@ -157,6 +150,13 @@ namespace tables {
                 }
                 mean /= columnVector.size();
                 fieldsSet = true;
+            }
+        }
+
+        void checkRange(int start, int end, std::string funcName) {
+            if (!(start >= 0 && end <= this->columnVector.size() && start < end)) {
+                std::string errMsg = "Column::" + funcName + ": Invalid range";
+                throw std::range_error(errMsg);
             }
         }
     };
