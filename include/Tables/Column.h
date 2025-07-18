@@ -17,9 +17,20 @@ namespace tables {
             return columnVector;
         }
 
-        T& row(int row) {
-            return columnVector.at(row);
+        // Return a new column with column elements from index low to end - 1
+        Column<T>& getRange(int start, int end) {
+            if (start >= 0 && end < this->columnVector.size() && start < end) {
+                Column<T>* newCol = new Column<T>();
+                for (int i = start; i < end; i++) {
+                    newCol.add(this->columnVector.at(i));
+                }
+            } else {
+                throw std::range_error("Column::getRange: Invalid range")
+            }
+            return *newCol;
         }
+
+
 
         void add(T data) {
             columnVector.push_back(data);
@@ -31,6 +42,10 @@ namespace tables {
 
         int size() {
             return columnVector.size();
+        }
+
+        bool empty() {
+            return columnVector.empty();
         }
 
         virtual T sum(float portion) {
