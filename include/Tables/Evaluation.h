@@ -1,3 +1,6 @@
+#ifndef EVALUATION_H
+#define EVALUATION_H
+
 #include <cmath>
 #include "Tables/Column.h"
 
@@ -35,3 +38,5 @@ namespace tables {
         }
     }
 }
+
+#endif
