@@ -40,6 +40,13 @@ namespace tables {
             columnVector.erase(columnVector.begin() + row);
         }
 
+        void swap(int index1, int index2) {
+            T temp;
+            temp = columnVector.at(index1);
+            columnVector.at(index1) = columnVector.at(index2);
+            columnVector.at(index2) = temp;
+        }
+
         int size() const {
             return columnVector.size();
         }

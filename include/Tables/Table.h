@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <fstream>
+#include <random>
 #include "ColumnBase.h"
 #include "Tables/Column.h"
 
@@ -155,6 +156,19 @@ namespace tables {
         template <typename T>
         T sum(std::string title, float portion) {
             return this->col<T>(title).sum(portion);
+        }
+
+        // Function to reshuffle table using Fisher-Yates algorithm
+        void reshuffle() {
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            for (int i = 0; i < height(); i++) {
+                std::uniform_int_distribution<> dist(i, height() - 1);
+                int randomIndex = dist(gen);
+                for (ColumnBase* column : table) {
+                    column->swap(i, randomIndex);
+                }
+            }
         }
 
         int height() {
