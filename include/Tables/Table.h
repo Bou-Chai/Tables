@@ -140,6 +140,16 @@ namespace tables {
             columnMap.erase(title);
         }
 
+        // Function to get a row of the table as a vector
+        template <typename T>
+        std::vector<T> getRow(int rowIndex) {
+            std::vector<T> row;
+            for(int i = 0; i < width(); i++) {
+                row.push_back(at<double>(i, rowIndex));
+            }
+            return row;
+        }
+
         void removeRow(int row) {
             for(int i = 0; i < table.size(); i++) {
                 table[i]->remove(row);
