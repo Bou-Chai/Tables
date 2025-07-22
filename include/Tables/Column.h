@@ -47,6 +47,10 @@ namespace tables {
             columnVector.at(index2) = temp;
         }
 
+        ColumnBase* bpCopy() {
+            return new Column<T>(*this);
+        }
+
         int size() const {
             return columnVector.size();
         }

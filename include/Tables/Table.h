@@ -156,16 +156,24 @@ namespace tables {
             }
         }
 
-        // Funciton to return sum of portion of column using index
-        template <typename T>
-        T sum(int col, float portion) {
-            return this->col<T>(col).sum(portion);
-        }
+        // Function to copy the table starting at start copying n columns
+        Table& copy(int start, int n) {
+            Table* newTable = new Table();
+            std::unordered_map<std::string, ColumnBase*>::iterator it;
 
-        // Function to return sum of portion of column using title
-        template <typename T>
-        T sum(std::string title, float portion) {
-            return this->col<T>(title).sum(portion);
+            for (int i = start; i < n; i++) {
+                ColumnBase* newColumn = table[i]->bpCopy();
+                // Copy over the column vector
+                newTable->table.push_back(newColumn);
+                // Copy over the column map
+                for (it = columnMap.begin(); it != columnMap.end(); ++it) {
+                    if (it->second == table[i]) {
+                        newTable->columnMap[it->first] = newColumn;
+                        break;
+                    }
+                }
+            }
+            return * newTable;
         }
 
         // Function to reshuffle table using Fisher-Yates algorithm
@@ -179,6 +187,18 @@ namespace tables {
                     column->swap(i, randomIndex);
                 }
             }
+        }
+
+        // Funciton to return sum of portion of column using index
+        template <typename T>
+        T sum(int col, float portion) {
+            return this->col<T>(col).sum(portion);
+        }
+
+        // Function to return sum of portion of column using title
+        template <typename T>
+        T sum(std::string title, float portion) {
+            return this->col<T>(title).sum(portion);
         }
 
         int height() {
@@ -306,7 +326,7 @@ namespace tables {
             this->replaceCol<std::string>(title, newColumn);
         }
 
-        void loadCSV(std::string fileName) {
+        void loadCSV(std::string fileName, char delimiter) {
             std::ifstream file(fileName);
             std::string line;
 
@@ -317,7 +337,7 @@ namespace tables {
             getline(file, line);
             std::string title = "";
             for (char c : line) {
-                if (c == ',') {
+                if (c == delimiter) {
                     this->addColumn<std::string>(title, Column<std::string>());
                     title = "";
                 } else {
@@ -330,7 +350,7 @@ namespace tables {
                 int columnIndex = 0;
                 std::string data = "";
                 for (char c : line) {
-                    if (c == ',') {
+                    if (c == delimiter) {
                         this->add<std::string>(columnIndex, data);
                         data = "";
                         columnIndex++;

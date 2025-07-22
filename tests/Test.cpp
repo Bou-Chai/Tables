@@ -13,7 +13,7 @@ int main() {
     tables::ColumnBase* col2P;
     tables::Table table;
     
-    table.loadCSV("../../../../Linear-Regression/tests/data/insurance.csv");
+    table.loadCSV("../../../../Linear-Regression/tests/data/insurance.csv", ',');
     table.print();
     table.reshuffle();
     table.print();
