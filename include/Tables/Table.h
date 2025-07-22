@@ -14,20 +14,6 @@
 namespace tables {
     class Table {
     public:
-        /*
-            ColumnBase& col(int col);
-            void removeRow(int row);
-            void removeCol(int col);
-            //void setTableMatrix(std::vector<std::vector<double>> &table);
-            int getHeight();
-            void toInt(int col);
-            void toLong(int col);
-            void toFloat(int col);
-            void toDouble(int col);
-            void toStr(int col);
-            double sumCol(int col);
-            */
-
         // Destructor
         ~Table() {
             std::cout << "Table dtor:" << "\n";
@@ -145,7 +131,17 @@ namespace tables {
         std::vector<T> getRow(int rowIndex) {
             std::vector<T> row;
             for(int i = 0; i < width(); i++) {
-                row.push_back(at<double>(i, rowIndex));
+                row.push_back(at<T>(i, rowIndex));
+            }
+            return row;
+        }
+
+        // Function to get a portion of a row of the table as a vector
+        template <typename T>
+        std::vector<T> getRow(int rowIndex, int start, int end) {
+            std::vector<T> row;
+            for(int i = start; i < end; i++) {
+                row.push_back(at<T>(i, rowIndex));
             }
             return row;
         }
@@ -156,7 +152,7 @@ namespace tables {
             }
         }
 
-        // Function to copy the table starting at columnStart copying n columns and copying n rows from row start
+        // Function to copy the table from columnStart to columnN exclusive and rowStart to rowN exclusive
         Table& copy(int columnStart, int columnN, int rowStart, int rowN) {
             Table* newTable = new Table();
             std::unordered_map<std::string, ColumnBase*>::iterator it;
