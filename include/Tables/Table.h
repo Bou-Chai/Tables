@@ -209,121 +209,141 @@ namespace tables {
             return table.size();
         }
 
-        void toInt(int col) {
-            Column<int>* newColumn = new Column<int>;
-            // Populate new column with integer values of the strings of the old column
-            std::vector<std::string> oldColumnV = this->col<std::string>(col).getVector();
-            for (std::string s : oldColumnV) {
-                newColumn->add(std::stoi(s));
+        void toInt(std::vector<int> indexList) {
+            for (int col : indexList) {
+                Column<int>* newColumn = new Column<int>;
+                // Populate new column with integer values of the strings of the old column
+                std::vector<std::string> oldColumnV = this->col<std::string>(col).getVector();
+                for (std::string s : oldColumnV) {
+                    newColumn->add(std::stoi(s));
+                }
+                // Replace old column with new column
+                this->replaceCol<int>(col, newColumn);
             }
-            // Replace old column with new column
-            this->replaceCol<int>(col, newColumn);
         }
 
-        void toInt(std::string title) {
-            Column<int>* newColumn = new Column<int>;
+        void toInt(std::vector<std::string> titleList) {
+            for (std::string title : titleList) {
+                Column<int>* newColumn = new Column<int>;
 
-            // Populate new column with integer values of the strings of the old column
-            std::vector<std::string> oldColumnV = this->col<std::string>(title).getVector();
-            for (std::string s : oldColumnV) {
-                newColumn->add(std::stoi(s));
+                // Populate new column with integer values of the strings of the old column
+                std::vector<std::string> oldColumnV = this->col<std::string>(title).getVector();
+                for (std::string s : oldColumnV) {
+                    newColumn->add(std::stoi(s));
+                }
+                // Replace old column with new column
+                this->replaceCol<int>(title, newColumn);
             }
-            // Replace old column with new column
-            this->replaceCol<int>(title, newColumn);
         }
 
-        void toLong(int col) {
-            Column<long>* newColumn = new Column<long>;
-            // Populate new column with long values of the strings of the old column
-            std::vector<std::string> oldColumnV = this->col<std::string>(col).getVector();
-            for (std::string s : oldColumnV) {
-                newColumn->add(std::stol(s));
+        void toLong(std::vector<int> indexList) {
+            for (int col : indexList) {
+                Column<long>* newColumn = new Column<long>;
+                // Populate new column with long values of the strings of the old column
+                std::vector<std::string> oldColumnV = this->col<std::string>(col).getVector();
+                for (std::string s : oldColumnV) {
+                    newColumn->add(std::stol(s));
+                }
+                // Replace old column with new column
+                this->replaceCol<long>(col, newColumn);
             }
-            // Replace old column with new column
-            this->replaceCol<long>(col, newColumn);
         }
 
-        void toLong(std::string title) {
-            Column<long>* newColumn = new Column<long>;
+        void toLong(std::vector<std::string> titleList) {
+            for (std::string title : titleList) {
+                Column<long>* newColumn = new Column<long>;
 
-            // Populate new column with long values of the strings of the old column
-            std::vector<std::string> oldColumnV = this->col<std::string>(title).getVector();
-            for (std::string s : oldColumnV) {
-                newColumn->add(std::stol(s));
+                // Populate new column with long values of the strings of the old column
+                std::vector<std::string> oldColumnV = this->col<std::string>(title).getVector();
+                for (std::string s : oldColumnV) {
+                    newColumn->add(std::stol(s));
+                }
+                // Replace old column with new column
+                this->replaceCol<long>(title, newColumn);
             }
-            // Replace old column with new column
-            this->replaceCol<long>(title, newColumn);
         }
 
-        void toFloat(int col) {
-            Column<float>* newColumn = new Column<float>;
-            // Populate new column with float values of the strings of the old column
-            std::vector<std::string> oldColumnV = this->col<std::string>(col).getVector();
-            for (std::string s : oldColumnV) {
-                newColumn->add(std::stof(s));
+        void toFloat(std::vector<int> indexList) {
+            for (int col : indexList) {
+                Column<float>* newColumn = new Column<float>;
+                // Populate new column with float values of the strings of the old column
+                std::vector<std::string> oldColumnV = this->col<std::string>(col).getVector();
+                for (std::string s : oldColumnV) {
+                    newColumn->add(std::stof(s));
+                }
+                // Replace old column with new column
+                this->replaceCol<float>(col, newColumn);
             }
-            // Replace old column with new column
-            this->replaceCol<float>(col, newColumn);
         }
 
-        void toFloat(std::string title) {
-            Column<float>* newColumn = new Column<float>;
+        void toFloat(std::vector<std::string> titleList) {
+            for (std::string title : titleList) {
+                Column<float>* newColumn = new Column<float>;
 
-            // Populate new column with float values of the strings of the old column
-            std::vector<std::string> oldColumnV = this->col<std::string>(title).getVector();
-            for (std::string s : oldColumnV) {
-                newColumn->add(std::stof(s));
+                // Populate new column with float values of the strings of the old column
+                std::vector<std::string> oldColumnV = this->col<std::string>(title).getVector();
+                for (std::string s : oldColumnV) {
+                    newColumn->add(std::stof(s));
+                }
+                // Replace old column with new column
+                this->replaceCol<float>(title, newColumn);
             }
-            // Replace old column with new column
-            this->replaceCol<float>(title, newColumn);
         }
 
-        void toDouble(int col) {
-            Column<double>* newColumn = new Column<double>;
-            // Populate new column with double values of the strings of the old column
-            std::vector<std::string> oldColumnV = this->col<std::string>(col).getVector();
-            for (std::string s : oldColumnV) {
-                newColumn->add(std::stod(s));
+        void toDouble(std::vector<int> indexList) {
+            for (int col : indexList) {
+                Column<double>* newColumn = new Column<double>;
+                // Populate new column with double values of the strings of the old column
+                std::vector<std::string> oldColumnV = this->col<std::string>(col).getVector();
+                for (std::string s : oldColumnV) {
+                    newColumn->add(std::stod(s));
+                }
+                // Replace old column with new column
+                this->replaceCol<double>(col, newColumn);
             }
-            // Replace old column with new column
-            this->replaceCol<double>(col, newColumn);
         }
 
-        void toDouble(std::string title) {
-            Column<double>* newColumn = new Column<double>;
+        void toDouble(std::vector<std::string> titleList) {
+            for (std::string title : titleList) {
+                Column<double>* newColumn = new Column<double>;
 
-            // Populate new column with double values of the strings of the old column
-            std::vector<std::string> oldColumnV = this->col<std::string>(title).getVector();
-            for (std::string s : oldColumnV) {
-                newColumn->add(std::stod(s));
+                // Populate new column with double values of the strings of the old column
+                std::vector<std::string> oldColumnV = this->col<std::string>(title).getVector();
+                for (std::string s : oldColumnV) {
+                    newColumn->add(std::stod(s));
+                }
+                // Replace old column with new column
+                this->replaceCol<double>(title, newColumn);
             }
-            // Replace old column with new column
-            this->replaceCol<double>(title, newColumn);
-        }
-
-        template <typename T>        
-        void toString(int col) {
-            Column<std::string>* newColumn = new Column<std::string>;
-            // Populate new column with double values of the strings of the old column
-            std::vector<T> oldColumnV = this->col<T>(col).getVector();
-            for (T s : oldColumnV) {
-                newColumn->add(std::to_string(s));
-            }
-            // Replace old column with new column
-            this->replaceCol<std::string>(col, newColumn);
         }
 
         template <typename T>
-        void toString(std::string title) {
-            Column<std::string>* newColumn = new Column<std::string>;
-
-            // Populate new column with double values of the strings of the old column
-            std::vector<T> oldColumnV = this->col<T>(title).getVector();
-            for (T s : oldColumnV) {
-                newColumn->add(std::to_string(s));
+        void toString(std::vector<int> indexList) {
+            for (int col : indexList) {
+                Column<std::string>* newColumn = new Column<std::string>;
+                // Populate new column with double values of the strings of the old column
+                std::vector<T> oldColumnV = this->col<T>(col).getVector();
+                for (T s : oldColumnV) {
+                    newColumn->add(std::to_string(s));
+                }
+                // Replace old column with new column
+                this->replaceCol<std::string>(col, newColumn);
             }
-            // Replace old column with new column
-            this->replaceCol<std::string>(title, newColumn);
+        }
+
+        template <typename T>
+        void toString(std::vector<std::string> titleList) {
+            for (std::string title : titleList) {
+                Column<std::string>* newColumn = new Column<std::string>;
+
+                // Populate new column with double values of the strings of the old column
+                std::vector<T> oldColumnV = this->col<T>(title).getVector();
+                for (T s : oldColumnV) {
+                    newColumn->add(std::to_string(s));
+                }
+                // Replace old column with new column
+                this->replaceCol<std::string>(title, newColumn);
+            }
         }
 
         void loadCSV(std::string fileName, char delimiter) {
