@@ -13,17 +13,13 @@ int main() {
     tables::ColumnBase* col2P;
     tables::Table table;
     
-    table.loadCSV("../../../../Linear-Regression/tests/data/insurance.csv", ',');
-    table.print();
-    table.reshuffle();
-    table.print();
-    /*
-    table.toDouble("bathrooms");
-    table.col<double>("bathrooms").print();
-    std::cout << table.sum<double>("bathrooms", 0.75) << "\n";
-    table.toString<double>("bathrooms");
-    table.col<std::string>("bathrooms").print();
-    */
-    //std::cout << table.sum<std::string>("bathrooms") << "\n";
+    table.loadCSV("../../tests/data/winequality-red.csv", ';');
+    
+    int trainSize = (int) (0.6 * table.height());
+    tables::Table table2 = table.copy(0, 3, 0, trainSize);
+    tables::Table table3 = table.copy(0, 3, trainSize, table.height());
+    table2.print();
+    table3.print();
+    
     return 0;
 }

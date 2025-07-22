@@ -156,13 +156,13 @@ namespace tables {
             }
         }
 
-        // Function to copy the table starting at start copying n columns
-        Table& copy(int start, int n) {
+        // Function to copy the table starting at columnStart copying n columns and copying n rows from row start
+        Table& copy(int columnStart, int columnN, int rowStart, int rowN) {
             Table* newTable = new Table();
             std::unordered_map<std::string, ColumnBase*>::iterator it;
 
-            for (int i = start; i < n; i++) {
-                ColumnBase* newColumn = table[i]->bpCopy();
+            for (int i = columnStart; i < columnN; i++) {
+                ColumnBase* newColumn = table[i]->bpCopy(rowStart, rowN);
                 // Copy over the column vector
                 newTable->table.push_back(newColumn);
                 // Copy over the column map

@@ -21,12 +21,12 @@ namespace tables {
             return columnVector.at(row);
         }
 
-        // Return a new column with column elements from index start to end - 1
-        Column<T>& getRange(int start, int end) {
-            checkRange(start, end, "getRange");
+        // Return a new column with column elements from index start to n - 1
+        Column<T>& getRange(int start, int n) {
+            checkRange(start, n, "getRange");
 
             Column<T>* newCol = new Column<T>();
-            for (int i = start; i < end; i++) {
+            for (int i = start; i < n; i++) {
                 newCol->add(this->columnVector.at(i));
             }   
             return *newCol;
@@ -47,8 +47,9 @@ namespace tables {
             columnVector.at(index2) = temp;
         }
 
-        ColumnBase* bpCopy() {
-            return new Column<T>(*this);
+        ColumnBase* bpCopy(int start, int n) {
+            checkRange(start, n, "bpCopy");
+            return &(getRange(start, n));
         }
 
         int size() const {
@@ -100,37 +101,37 @@ namespace tables {
             return mean;
         }
 
-        T getMin(int start, int end) {
-            checkRange(start, end, "getMin");
+        T getMin(int start, int n) {
+            checkRange(start, n, "getMin");
 
             T min;
             min = columnVector[start];
-            for (int i = start; i < end; i++) {
+            for (int i = start; i < n; i++) {
                 min = std::min(min, columnVector[i]);
             }
             return min;
         }
 
-        T getMax(int start, int end) {
-            checkRange(start, end, "getMax");
+        T getMax(int start, int n) {
+            checkRange(start, n, "getMax");
 
             T max;
             max = columnVector[start];
-            for (int i = start; i < end; i++) {
+            for (int i = start; i < n; i++) {
                 max = std::max(max, columnVector[i]);
             }
             return max;
         }
 
-        T getMean(int start, int end) {
-            checkRange(start, end, "getMean");
+        T getMean(int start, int n) {
+            checkRange(start, n, "getMean");
 
             T sum;
             sum = 0;
-            for (int i = start; i < end; i++) {
+            for (int i = start; i < n; i++) {
                 sum += columnVector[i];
             }
-            return sum / (end - start);
+            return sum / (n - start);
         }
 
     protected:
@@ -160,8 +161,8 @@ namespace tables {
             }
         }
 
-        void checkRange(int start, int end, std::string funcName) {
-            if (!(start >= 0 && end <= this->columnVector.size() && start < end)) {
+        void checkRange(int start, int n, std::string funcName) {
+            if (!(start >= 0 && n <= this->columnVector.size() && start < n)) {
                 std::string errMsg = "Column::" + funcName + ": Invalid range";
                 throw std::range_error(errMsg);
             }
