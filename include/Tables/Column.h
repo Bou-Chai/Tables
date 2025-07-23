@@ -75,8 +75,8 @@ namespace tables {
         // Function to normalize column data to a range between 0 and 1
         void normalize() {
             setFields();
-            for (T data : columnVector) {
-                data = (data - min) / (max - min);
+            for (int i = 0; i < columnVector.size(); i++) {
+                columnVector[i] = (columnVector[i] - min) / (max - min);
             }
         }
 
@@ -152,8 +152,8 @@ namespace tables {
             max = columnVector[0];
             if (!fieldsSet) {
                 for (T data : columnVector) {
-                    min = min(min, data);
-                    max = max(max, data);
+                    min = std::min(min, data);
+                    max = std::max(max, data);
                     mean += data;
                 }
                 mean /= columnVector.size();

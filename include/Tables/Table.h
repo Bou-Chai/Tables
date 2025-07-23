@@ -184,6 +184,30 @@ namespace tables {
                 }
             }
         }
+        template <typename T>        
+        // Function to normalize specified column using index
+        void normalize(int col) {
+            this->col<T>(col).normalize();
+        }
+        template <typename T>
+        // Function to normalize specified columns using a range of values
+        void normalize(int start, int end) {
+            for (int i = start; i < end; i++) {
+                this->col<T>(i).normalize();
+            }
+        }
+        template <typename T>
+        // Function to normalize specified column using title
+        void normalize(std::string title) {
+            this->col<T>(title).normalize();
+        }
+        template <typename T>
+        // Function to normalize specified columns using a vector of titles
+        void normalize(std::vector<std::string> titles) {
+            for (std::string title : titles) {
+                this->col<T>(title).normalize();
+            }
+        }
 
         // Funciton to return sum of portion of column using index
         template <typename T>
