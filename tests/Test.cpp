@@ -2,7 +2,6 @@
 #include <string>
 #include "Tables/Table.h"
 #include "Tables/Column.h"
-#include "Tables/NumericalColumn.h"
 
 int main() {
 

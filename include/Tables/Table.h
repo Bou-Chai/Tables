@@ -16,11 +16,9 @@ namespace tables {
     public:
         // Destructor
         ~Table() {
-            std::cout << "Table dtor:" << "\n";
             for (ColumnBase* columnP : table) {
                 delete columnP;
             }
-            std::cout << "End Table dtor:" << "\n";
         }
 
         // Function to access table element

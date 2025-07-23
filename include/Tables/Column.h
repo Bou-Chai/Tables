@@ -9,10 +9,6 @@ namespace tables {
     template <typename T>
     class Column : public ColumnBase {
     public:
-        virtual ~Column() {
-            //std::cout << "Column destructor called" << "\n";
-        }
-        
         std::vector<T>& getVector() {
             return columnVector;
         }
