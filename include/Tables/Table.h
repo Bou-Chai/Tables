@@ -182,6 +182,19 @@ namespace tables {
                 }
             }
         }
+
+        // Function to reshuffle table using Fisher-Yates algorithm and a seed
+        void reshuffle(int seed) {
+            std::mt19937 gen(seed);
+            for (int i = 0; i < height(); i++) {
+                std::uniform_int_distribution<> dist(i, height() - 1);
+                int randomIndex = dist(gen);
+                for (ColumnBase* column : table) {
+                    column->swap(i, randomIndex);
+                }
+            }
+        }
+
         template <typename T>        
         // Function to normalize specified column using index
         void normalize(int col) {
