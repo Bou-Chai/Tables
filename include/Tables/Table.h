@@ -195,11 +195,13 @@ namespace tables {
             }
         }
 
+        // TODO: Make normalize a virtual function in ColumnBase to avoid using col function
         template <typename T>        
         // Function to normalize specified column using index
         void normalize(int col) {
             this->col<T>(col).normalize();
         }
+
         template <typename T>
         // Function to normalize specified columns using a range of values
         void normalize(int start, int end) {
@@ -207,16 +209,26 @@ namespace tables {
                 this->col<T>(i).normalize();
             }
         }
+
         template <typename T>
         // Function to normalize specified column using title
         void normalize(std::string title) {
             this->col<T>(title).normalize();
         }
+
         template <typename T>
         // Function to normalize specified columns using a vector of titles
         void normalize(std::vector<std::string> titles) {
             for (std::string title : titles) {
                 this->col<T>(title).normalize();
+            }
+        }
+
+        //Function to normalize entire table
+        template <typename T>
+        void normalize() {
+            for(int i = 0; i < this->width(); i++) {
+                this->col<T>(i).normalize();
             }
         }
 
