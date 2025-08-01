@@ -85,6 +85,23 @@ namespace tables {
             std::cout << "\n";
         }
 
+        T findMajority() {
+            T majorityElement = columnVector[0];
+            int count = 0;
+
+            for (T element : columnVector) {
+                if (count == 0) {
+                    majorityElement = element;
+                    count++;
+                } else if (element == majorityElement) {
+                    count++;
+                } else {
+                    count--;
+                }
+            }
+            return majorityElement;
+        }
+
         T getMin() {
             return min;
         }
